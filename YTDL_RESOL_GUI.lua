@@ -3,7 +3,7 @@ local disp = bmd.UIDispatcher(ui)
 local width,height = 600,300
 local clock = os.clock
 
-function sleep(n)  -- seconds
+function sleep(n)  
   local t0 = clock()
   while clock() - t0 <= n do end
 end
@@ -83,22 +83,14 @@ end
 function win.On.geturl.Clicked(ev)
 	url = tostring(itm.inputurl.Text)
 	dump(url)
-	lpath = 'C:/Users/jinga/YTD'
+	lpath = '\"%APPDATA%/Roaming/Blackmagic Design/DaVinci Resolve/Support/Fusion/Scripts/Comp\"'
 	dump(lpath)
 
-	--[[ytbsh = lpath.."/S1P1.sh"
-	editytb = assert(io.output(ytbsh))
-	editytb:write("#!/bin/sh")
-	editytb:write("\r\nyoutube-dl "..url.." -o "..lpath.."/ytdl/input.mp4")
-	editytb:close()
 
-	bull = os.execute("chmod +x "..ytbsh)
-dump(bull)]]--
-	ffmpegProgramPath = 'C://Users//jinga//YTD//ffmpeg.exe' 
-	ytdlProgramPath = 'C://Users//jinga//YTD//youtube-dl.exe'
+	ffmpegProgramPath = '\"%APPDATA%/Roaming/Blackmagic Design/DaVinci Resolve/Support/Fusion/Scripts/Compffmpeg.exe\"' 
+	ytdlProgramPath = '\"%APPDATA%/Roaming/Blackmagic Design/DaVinci Resolve/Support/Fusion/Scripts/Comp/youtube-dl.exe\"'
 
 	yttitlecmd=ytdlProgramPath.." --get-filename "..url
-	--.." -o "..lpath.."/ytdl/input.mp4"
 	titleproc=io.popen(yttitlecmd)
 local output = titleproc:read('*all')
 titleproc:close()
@@ -120,46 +112,17 @@ dump(comand)
 dump(ytcommand)
 dump("Attempting to download "..hname)
 	os.execute(ytcommand)
---	dump(yttitlecmd)
-	--dump(propat)
---[[
-	EncTable = {}
-	ToEncode = assert(io.popen("ls "..lpath))
-		for line in ToEncode:lines() do
-			table.insert(EncTable,line)
-		end
-		ToEncode:close()
-
-		for i,v in ipairs(EncTable) do
-			titleform = string.gsub(v,"%p%w%w%w","")
-			titleform2 = string.gsub(titleform,"%s","")
-		--	EncodeCommand = ffmpegProgramPath.." -y -i \'"..lpath.."/"..v.."\' -c:v prores_ks -profile:v 0 -s 1280x720 -r 29.97 \""..titleform2..".mov\""
-		--	print(EncodeCommand)
-
-		end]]
 	fpath = lpath.."/"..hname..".mp4"
 	os.execute(ffmpegProgramPath.." -i "..lpath.."/"..hname..".mkv -c:v h264 "..lpath.."/"..hname..".mp4")
 	dump(fpath)
 	mediastorage:AddItemListToMediaPool(fpath)
 
---	ffmpegcmd = ffmpegProgramPath.." -y -i "..lpath.."/ytdl/input.mp4".." -c:v prores_ks -profile:v 0 -s 1280x720 -r 29.97 output.mp4"
-	--encode = os.execute(ffmpegcmd)
-	--dump(ffmpegcmd)
+
 
 	folder = mediapool:GetCurrentFolder()
 
 
 end
-
-			--	local newXml = "/Users/haus/Movies/Drawer/Cache/"..binName.."_"..tlName.."-"..b..".fcpxml"
-						--	/Users/haus/Movies/Drawer/Cache
-			--	tmpXML = assert(io.output(newXml))
-			--	tmpXML:write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<!DOCTYPE fcpxml>\r\n<fcpxml version=\"1.8\"> \r\n	<resources>")
-
-
-			--	tmpXML:seek("end")
-			--	tmpXML:wr
-
 win:Show()
 disp:RunLoop()
 win:Hide() 
